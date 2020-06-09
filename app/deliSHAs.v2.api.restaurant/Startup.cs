@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using deliSHAs.v2.api.restaurant.Services.retaurant.service;
 using deliSHAs.v2.api.restaurant.Services.store.restaurant;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,7 +30,8 @@ namespace deliSHAs.v2.api.restaurant
         {
             services.AddControllers();
 
-            var restaurantService = new RestaurantService(Configuration.GetConnectionString("DefaultConnection"));
+            var mySqlRestaurantDataService = new MySqlRestaurantDataService(Configuration.GetConnectionString("DefaultConnection"));
+            var restaurantService = new RestaurantService(mySqlRestaurantDataService);
             services.AddSingleton<IRestaurantService>(restaurantService);
         }
 
