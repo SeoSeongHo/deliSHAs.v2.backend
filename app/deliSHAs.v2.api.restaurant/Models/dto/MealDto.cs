@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace deliSHAs.v2.api.restaurant.Models
 {
-    public class Meal
+    public class MealDto
     {
-        public List<Menu> menus { get; set; }
+        public List<MenuDto> menus { get; set; }
         public string message { get; set; }
         public bool isValid { get; set; }
     }
