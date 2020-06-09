@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
 {
-    public interface IRestaurantService
+    public interface IMySqlRestaurantDataService
     {
         List<Restaurant> GetRestaurants();
     }
