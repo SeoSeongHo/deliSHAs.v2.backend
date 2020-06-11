@@ -33,10 +33,10 @@ namespace deliSHAs.v2.api.restaurant.Services.cache
         /// <param name="key"></param>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public async Task<T> Get<T>(string key)
+        public T Get<T>(string key)
         {
             if (!_cache.TryGetValue(key, out CacheEntry cacheEntry))
-                throw new GetCacheException($"failed to find cache entry. key: {key}");
+                return (T)default;
 
             return (T)cacheEntry.data;
         }
@@ -58,19 +58,26 @@ namespace deliSHAs.v2.api.restaurant.Services.cache
             {
                 if (!_cache.TryGetValue(key, out CacheEntry cacheEntry))
                 {
-                    cacheEntry.data = entry;
-                    cacheEntry.absoluteExpirationDateTime = DateTime.Now.AddDays(1);
+                    cacheEntry = new CacheEntry
+                    {
+                        data = entry,
+                        absoluteExpirationDateTime = DateTime.Now.AddDays(2)
+                    };
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
+                            .SetSize(1)            
+                            .SetPriority(CacheItemPriority.Normal)
                             .SetSlidingExpiration(TimeSpan.FromDays(3))       // entry 에 해당 시간동안 접근이 없다면 제거 됨
                             .SetAbsoluteExpiration(TimeSpan.FromDays(3));    // entry 가 캐시될 수 있는 최대 시간
 
                     cacheEntry = _cache.Set(key, cacheEntry, cacheEntryOptions);
+
+                    isCreated = true;
                 }
             }
-            catch
+            catch(Exception e)
             {
-                // throw new CacheUpdateException
+                Console.WriteLine($"Exception : {e.Message}");
             }
             finally
             {
@@ -99,21 +106,28 @@ namespace deliSHAs.v2.api.restaurant.Services.cache
             {
                 if(_cache.TryGetValue(key, out CacheEntry cacheEntry))
                 {
-                    cacheEntry.data = entry;
-                    cacheEntry.absoluteExpirationDateTime = DateTime.Now.AddDays(1);
+                    cacheEntry = new CacheEntry
+                    {
+                        data = entry,
+                        absoluteExpirationDateTime = DateTime.Now.AddDays(2)
+                    };
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
+                            .SetSize(1)
+                            .SetPriority(CacheItemPriority.Normal)
                             .SetSlidingExpiration(TimeSpan.FromDays(3))       // entry 에 해당 시간동안 접근이 없다면 제거 됨
                             .SetAbsoluteExpiration(TimeSpan.FromDays(3));    // entry 가 캐시될 수 있는 최대 시간
 
                     cacheEntry = _cache.Set(key, cacheEntry, cacheEntryOptions);
+
+                    isUpdated = true;
                 }
 
 
             }
             catch(Exception e)
             {
-                // throw new CacheUpdateException
+                Console.WriteLine($"Exception : {e.Message}");
             }
             finally
             {
