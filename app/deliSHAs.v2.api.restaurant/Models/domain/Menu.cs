@@ -8,6 +8,7 @@ namespace deliSHAs.v2.api.restaurant.Models
 {
     public class Menu
     {
+        public long id { get; set; }
         public DateTime date { get; set; }
         public bool isValid { get; set; }
         public MealTime mealTime { get; set; }
@@ -21,7 +22,7 @@ namespace deliSHAs.v2.api.restaurant.Models
             return new MenuDto
             {
                 // TODO SQL 수정하기
-                id = 1,
+                id = menu.id,
                 name = menu.name,
                 price = menu.price
             };

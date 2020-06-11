@@ -26,15 +26,23 @@ namespace deliSHAs.v2.api.restaurant.Models.exception
     {
         public GetCacheException(string message) : base(message)
         {
-
+            Console.WriteLine(message);
         }
     }
 
-    public class CacheUpdateException : Exception
+    public class CreateCacheException : Exception
     {
-        public CacheUpdateException(string message) : base(message)
+        public CreateCacheException(string message) : base(message)
         {
+            Console.WriteLine(message);
+        }
+    }
 
+    public class UpdateCacheException : Exception
+    {
+        public UpdateCacheException(string message) : base(message)
+        {
+            Console.WriteLine(message);
         }
     }
     #endregion
