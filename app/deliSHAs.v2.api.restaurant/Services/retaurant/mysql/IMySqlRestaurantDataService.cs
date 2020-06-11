@@ -8,6 +8,6 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
 {
     public interface IMySqlRestaurantDataService
     {
-        List<Restaurant> GetRestaurants();
+        List<RestaurantDto> GetRestaurants();
     }
 }

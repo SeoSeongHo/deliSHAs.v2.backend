@@ -17,11 +17,11 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
             this.connectionStr = connectionStr;
         }
 
-        public List<Restaurant> GetRestaurants()
+        public List<RestaurantDto> GetRestaurants()
         {
-            var restaurantInfos = new List<RestaurantInfo>();
+            var restaurantInfos = new List<Restaurant>();
             var menus = new List<Menu>();
-            var restaurants = new List<Restaurant>();
+            var restaurants = new List<RestaurantDto>();
 
             using(MySqlConnection conn = new MySqlConnection(connectionStr))
             {
@@ -34,13 +34,15 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
 
                 // 1. 식당 정보 가져오기
                 cmd.CommandText = "get_restaurants_info_by_date";
-                cmd.Parameters.Add("in_date", MySqlDbType.DateTime).Value = new DateTime(2020, 04, 21);
+                // TEST 용
+                Console.WriteLine($"DateTIme : {DateTime.Now.ToString("yyyy-MM-dd")}");
+                cmd.Parameters.Add("in_date", MySqlDbType.DateTime).Value = DateTime.Now.ToString("yyyy-MM-dd");
 
                 using (MySqlDataReader reader = cmd.ExecuteReader()) 
                 {
                     while (reader.Read())
                     {
-                        restaurantInfos.Add(new RestaurantInfo { 
+                        restaurantInfos.Add(new Restaurant { 
                             id = MySqlDBHelper.SafeRead<long>(reader, "id"),
                             name = MySqlDBHelper.SafeRead<string>(reader, "name"),
                             contact = MySqlDBHelper.SafeRead<string>(reader, "contact"),
@@ -65,8 +67,10 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                     {
                         menus.Add(new Menu
                         {
+                            id = MySqlDBHelper.SafeRead<long>(reader, "id"),
                             date = MySqlDBHelper.SafeRead<DateTime>(reader, "date"),
                             isValid = Convert.ToBoolean(MySqlDBHelper.SafeRead<UInt64>(reader, "is_valid")),
+                            mealTime = (MealTime)Enum.Parse(typeof(MealTime), MySqlDBHelper.SafeRead<string>(reader, "meal_time")),
                             msg = MySqlDBHelper.SafeRead<string>(reader, "msg"),
                             name = MySqlDBHelper.SafeRead<string>(reader, "name"),
                             price = MySqlDBHelper.SafeRead<int>(reader, "price"),
@@ -79,9 +83,13 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                 // 3. 식당 정보, 메뉴를 합치기
                 foreach(var restaurantInfo in restaurantInfos)
                 {
-                    var menu = menus?.Where(x => x.restaurant_id == restaurantInfo.id)?.ToList();
+                    var targetMenu = menus?.Where(x => x.restaurant_id == restaurantInfo.id)?.ToList();
 
-                    restaurants.Add(new Restaurant { 
+                    var breakfasts = targetMenu?.Where(x => x.mealTime == MealTime.BREAKFAST)?.ToList() ?? null;
+                    var lunchs = targetMenu?.Where(x => x.mealTime == MealTime.LUNCH)?.ToList() ?? null;
+                    var dinners = targetMenu?.Where(x => x.mealTime == MealTime.DINNER)?.ToList() ?? null;
+
+                    restaurants.Add(new RestaurantDto { 
                         id = restaurantInfo.id,
                         name = restaurantInfo.name,
                         place = restaurantInfo.place,
@@ -91,25 +99,25 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                         dinnerTime = restaurantInfo.dinnerTime,
                         date = restaurantInfo.date,
 
-                        breakfast = new Meal
+                        breakfast = new MealDto
                         {
-                            menus = menu?.Where(x => x.mealTime == MealTime.BREAKFAST)?.ToList() ?? null,
-                            message = menu?.FirstOrDefault()?.msg,
-                            isValid = menu?.FirstOrDefault()?.isValid ?? true
+                            menus = (breakfasts != null && breakfasts.Count > 0) ? Enumerable.Range(0, breakfasts.Count-1).Select(i => Menu.ToDto(breakfasts[i])).ToList() : null,
+                            message = breakfasts?.FirstOrDefault()?.msg,
+                            isValid = breakfasts?.FirstOrDefault()?.isValid ?? true
                         },
 
-                        lunch = new Meal
+                        lunch = new MealDto
                         {
-                            menus = menu?.Where(x => x.mealTime == MealTime.LUNCH)?.ToList() ?? null,
-                            message = menu?.FirstOrDefault()?.msg,
-                            isValid = menu?.FirstOrDefault()?.isValid ?? true
+                            menus = (lunchs != null && lunchs.Count > 0) ? Enumerable.Range(0, lunchs.Count - 1).Select(i => Menu.ToDto(lunchs[i])).ToList() : null,
+                            message = lunchs?.FirstOrDefault()?.msg,
+                            isValid = lunchs?.FirstOrDefault()?.isValid ?? true
                         },
 
-                        dinner = new Meal
+                        dinner = new MealDto
                         {
-                            menus = menu?.Where(x => x.mealTime == MealTime.DINNER)?.ToList() ?? null,
-                            message = menu?.FirstOrDefault()?.msg,
-                            isValid = menu?.FirstOrDefault()?.isValid ?? true
+                            menus = (dinners != null && dinners.Count > 0) ? Enumerable.Range(0, dinners.Count - 1).Select(i => Menu.ToDto(dinners[i])).ToList() : null,
+                            message = dinners?.FirstOrDefault()?.msg,
+                            isValid = dinners?.FirstOrDefault()?.isValid ?? true
                         },
 
                         latitude = restaurantInfo.latitude,

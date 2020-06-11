@@ -21,15 +21,21 @@ namespace deliSHAs.v2.api.restaurant.Services.retaurant.service
             _mySqlRestaurantDataService = mySqlRestaurantDataService;
         }
 
-        public async Task<List<Restaurant>> GetRestaurants()
+        public async Task<List<RestaurantDto>> GetRestaurants()
         {
-            var restaurants = await _restaurantCache.Get<List<Restaurant>>("");
+            var restaurants = _restaurantCache.Get<List<RestaurantDto>>(DateTime.Now.ToString("yyyy-MM-dd"));
 
-            if (restaurants.Count <= 0 || restaurants == null)
+            if (restaurants == null || restaurants.Count <= 0)
             {
                 restaurants = _mySqlRestaurantDataService.GetRestaurants();
+                // TODO Exception 처리하기
                 if (restaurants.Count <= 0 || restaurants == null)
-                    throw new RestaurantNotFoundException("");
+                    throw new RestaurantNotFoundException($"can not find any restaurants.");
+
+                bool isCreated = await _restaurantCache.Create(restaurants.FirstOrDefault().date.ToString("yyyy-MM-dd"), restaurants);
+
+                if (isCreated)
+                    throw new CreateCacheException($"failed to create cache.");
             }
 
             return restaurants;

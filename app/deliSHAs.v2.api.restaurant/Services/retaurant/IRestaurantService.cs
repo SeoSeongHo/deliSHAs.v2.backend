@@ -8,6 +8,6 @@ namespace deliSHAs.v2.api.restaurant.Services.retaurant.service
 {
     public interface IRestaurantService
     {
-        Task<List<Restaurant>> GetRestaurants();
+        Task<List<RestaurantDto>> GetRestaurants();
     }
 }
