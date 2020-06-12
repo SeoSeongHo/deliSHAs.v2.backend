@@ -17,7 +17,7 @@ namespace deliSHAs.v2.api.restaurant.Models.exception
     { 
         public RestaurantNotFoundException(string message) : base(message)
         {
-
+            Console.WriteLine(message);
         }
     }
 

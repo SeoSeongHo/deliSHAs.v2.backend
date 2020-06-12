@@ -28,7 +28,7 @@ namespace deliSHAs.v2.api.restaurant.Services.retaurant.service
             if (restaurants == null || restaurants.Count <= 0)
             {
                 restaurants = _mySqlRestaurantDataService.GetRestaurants();
-                // TODO Exception 처리하기
+
                 if (restaurants.Count <= 0 || restaurants == null)
                     throw new RestaurantNotFoundException($"can not find any restaurants.");
 

@@ -86,7 +86,7 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                     var targetMenu = menus?.Where(x => x.restaurant_id == restaurantInfo.id)?.ToList();
 
                     var breakfasts = targetMenu?.Where(x => x.mealTime == MealTime.BREAKFAST)?.ToList() ?? null;
-                    var lunchs = targetMenu?.Where(x => x.mealTime == MealTime.LUNCH)?.ToList() ?? null;
+                    var lunches = targetMenu?.Where(x => x.mealTime == MealTime.LUNCH)?.ToList() ?? null;
                     var dinners = targetMenu?.Where(x => x.mealTime == MealTime.DINNER)?.ToList() ?? null;
 
                     restaurants.Add(new RestaurantDto { 
@@ -101,21 +101,21 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
 
                         breakfast = new MealDto
                         {
-                            menus = (breakfasts != null && breakfasts.Count > 0) ? Enumerable.Range(0, breakfasts.Count-1).Select(i => Menu.ToDto(breakfasts[i])).ToList() : null,
+                            menus = (breakfasts != null && breakfasts.Count > 0) ? Enumerable.Range(0, breakfasts.Count).Select(i => Menu.ToDto(breakfasts[i])).ToList() : null,
                             message = breakfasts?.FirstOrDefault()?.msg,
                             isValid = breakfasts?.FirstOrDefault()?.isValid ?? true
                         },
 
                         lunch = new MealDto
                         {
-                            menus = (lunchs != null && lunchs.Count > 0) ? Enumerable.Range(0, lunchs.Count - 1).Select(i => Menu.ToDto(lunchs[i])).ToList() : null,
-                            message = lunchs?.FirstOrDefault()?.msg,
-                            isValid = lunchs?.FirstOrDefault()?.isValid ?? true
+                            menus = (lunches != null && lunches.Count > 0) ? Enumerable.Range(0, lunches.Count).Select(i => Menu.ToDto(lunches[i])).ToList() : null,
+                            message = lunches?.FirstOrDefault()?.msg,
+                            isValid = lunches?.FirstOrDefault()?.isValid ?? true
                         },
 
                         dinner = new MealDto
                         {
-                            menus = (dinners != null && dinners.Count > 0) ? Enumerable.Range(0, dinners.Count - 1).Select(i => Menu.ToDto(dinners[i])).ToList() : null,
+                            menus = (dinners != null && dinners.Count > 0) ? Enumerable.Range(0, dinners.Count).Select(i => Menu.ToDto(dinners[i])).ToList() : null,
                             message = dinners?.FirstOrDefault()?.msg,
                             isValid = dinners?.FirstOrDefault()?.isValid ?? true
                         },

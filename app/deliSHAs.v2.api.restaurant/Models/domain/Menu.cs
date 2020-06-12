@@ -21,7 +21,6 @@ namespace deliSHAs.v2.api.restaurant.Models
         {
             return new MenuDto
             {
-                // TODO SQL 수정하기
                 id = menu.id,
                 name = menu.name,
                 price = menu.price
