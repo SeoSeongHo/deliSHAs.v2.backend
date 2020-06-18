@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "delishas_was",
+      "image": "182756308452.dkr.ecr.ap-northeast-2.amazonaws.com/delishas/was:latest",
+      "essential": true,
+      "memoryReservation": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ]
+    }
+  ]
+}

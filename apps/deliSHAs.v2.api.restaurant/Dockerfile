@@ -4,10 +4,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
-COPY ["app/deliSHAs.v2.api.restaurant/deliSHAs.v2.api.restaurant.csproj", "app/deliSHAs.v2.api.restaurant/"]
-RUN dotnet restore "app/deliSHAs.v2.api.restaurant/deliSHAs.v2.api.restaurant.csproj"
+COPY ["apps/deliSHAs.v2.api.restaurant/deliSHAs.v2.api.restaurant.csproj", "apps/deliSHAs.v2.api.restaurant/"]
+RUN dotnet restore "apps/deliSHAs.v2.api.restaurant/deliSHAs.v2.api.restaurant.csproj"
 COPY . .
-WORKDIR "/src/app/deliSHAs.v2.api.restaurant"
+WORKDIR "/src/apps/deliSHAs.v2.api.restaurant"
 RUN dotnet build "deliSHAs.v2.api.restaurant.csproj" -c Release -o /app/build
 
 FROM build AS publish

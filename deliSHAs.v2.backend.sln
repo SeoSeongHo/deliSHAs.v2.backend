@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{80BE380F-A179-44C1-8EF9-D542190B5B5F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{9BACBB26-511E-45C2-AFD4-70B464FA4C1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "deliSHAs.v2.api.restaurant", "app\deliSHAs.v2.api.restaurant\deliSHAs.v2.api.restaurant.csproj", "{8DEB690D-C258-4AFD-B2BE-CF23F4D1C5FE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "out_items", "out_items", "{E2F2BA53-92F2-41BC-B7DB-6AFED7AEF3FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{E48621CD-9608-4EEA-93DF-B04A681E046B}"
+	ProjectSection(SolutionItems) = preProject
+		out_items\nginx\Dockerfile = out_items\nginx\Dockerfile
+		out_items\nginx\nginx.conf = out_items\nginx\nginx.conf
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "deliSHAs.v2.api.restaurant", "apps\deliSHAs.v2.api.restaurant\deliSHAs.v2.api.restaurant.csproj", "{A96A031C-001A-44A4-BD6B-C650FFFB4A65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +21,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8DEB690D-C258-4AFD-B2BE-CF23F4D1C5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DEB690D-C258-4AFD-B2BE-CF23F4D1C5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DEB690D-C258-4AFD-B2BE-CF23F4D1C5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DEB690D-C258-4AFD-B2BE-CF23F4D1C5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A96A031C-001A-44A4-BD6B-C650FFFB4A65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A96A031C-001A-44A4-BD6B-C650FFFB4A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A96A031C-001A-44A4-BD6B-C650FFFB4A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A96A031C-001A-44A4-BD6B-C650FFFB4A65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8DEB690D-C258-4AFD-B2BE-CF23F4D1C5FE} = {80BE380F-A179-44C1-8EF9-D542190B5B5F}
+		{E48621CD-9608-4EEA-93DF-B04A681E046B} = {E2F2BA53-92F2-41BC-B7DB-6AFED7AEF3FB}
+		{A96A031C-001A-44A4-BD6B-C650FFFB4A65} = {9BACBB26-511E-45C2-AFD4-70B464FA4C1D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC38D987-34F3-4B67-AE9D-93DFFE6EABB6}
