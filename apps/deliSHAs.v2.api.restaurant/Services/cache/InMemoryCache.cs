@@ -26,7 +26,7 @@ namespace deliSHAs.v2.api.restaurant.Services.cache
         }
 
         /// <summary>
-        /// Cache GetOrCreate Method
+        /// Cache Get Method
         /// Cache 에 key 에 대한 entry 가 있다면, 해당 값 return 해주는 메소드
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -39,6 +39,31 @@ namespace deliSHAs.v2.api.restaurant.Services.cache
                 return (T)default;
 
             return (T)cacheEntry.data;
+        }
+
+        /// <summary>
+        /// Cache GetAll Method
+        /// Keyword 에 맞는 Cache 데이터를 반환해주는 메소드
+        /// example > if keyword is  2020, method would return datas has prefix 2020.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public Dictionary<string, T> GetAll<T>(string keyword)
+        {
+            var keys = _cache.Get<List<string>>(keyword)?.ToList();
+
+            if (keys == null || keys.Count == 0)
+                return (Dictionary<string, T>)default;
+
+            var results = new Dictionary<string, T>();
+
+            foreach(var key in keys)
+            {
+                results.Add(key, Get<T>(key));
+            }
+
+            return results;
         }
 
         /// <summary>
@@ -67,8 +92,8 @@ namespace deliSHAs.v2.api.restaurant.Services.cache
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
                             .SetSize(1)            
                             .SetPriority(CacheItemPriority.Normal)
-                            .SetSlidingExpiration(TimeSpan.FromDays(3))       // entry 에 해당 시간동안 접근이 없다면 제거 됨
-                            .SetAbsoluteExpiration(TimeSpan.FromDays(3));    // entry 가 캐시될 수 있는 최대 시간
+                            .SetSlidingExpiration(TimeSpan.FromDays(2))       // entry 에 해당 시간동안 접근이 없다면 제거 됨
+                            .SetAbsoluteExpiration(TimeSpan.FromDays(2));    // entry 가 캐시될 수 있는 최대 시간
 
                     cacheEntry = _cache.Set(key, cacheEntry, cacheEntryOptions);
 

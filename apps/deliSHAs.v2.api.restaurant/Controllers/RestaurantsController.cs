@@ -28,5 +28,17 @@ namespace deliSHAs.v2.api.restaurant.Controllers
 
             return Ok(restaurants);
         }
+
+
+        /// <summary>
+        /// 캐시 내부를 확인하는 메소드
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("caches")]
+        public IActionResult GetCaches()
+        {
+            var restaurantsCaches = restaurantService.GetRestaurantCaches();
+            return Ok(restaurantsCaches);
+        }
     }
 }

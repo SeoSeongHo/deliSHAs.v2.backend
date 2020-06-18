@@ -9,5 +9,6 @@ namespace deliSHAs.v2.api.restaurant.Services.retaurant.service
     public interface IRestaurantService
     {
         Task<List<RestaurantDto>> GetRestaurants();
+        Dictionary<string, List<RestaurantDto>> GetRestaurantCaches();
     }
 }
