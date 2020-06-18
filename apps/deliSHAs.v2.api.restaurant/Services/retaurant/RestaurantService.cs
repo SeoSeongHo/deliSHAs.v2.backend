@@ -23,7 +23,7 @@ namespace deliSHAs.v2.api.restaurant.Services.retaurant.service
 
         public async Task<List<RestaurantDto>> GetRestaurants()
         {
-            var restaurants = _restaurantCache.Get<List<RestaurantDto>>(DateTime.Now.ToString("yyyy-MM-dd"));
+            var restaurants = _restaurantCache.Get<List<RestaurantDto>>(DateTime.UtcNow.AddHours(9).ToString("yyyy-MM-dd"));
 
             if (restaurants == null || restaurants.Count <= 0)
             {
@@ -34,11 +34,16 @@ namespace deliSHAs.v2.api.restaurant.Services.retaurant.service
 
                 bool isCreated = await _restaurantCache.Create(restaurants.FirstOrDefault().date.ToString("yyyy-MM-dd"), restaurants);
 
-                if (isCreated)
+                if (!isCreated)
                     throw new CreateCacheException($"failed to create cache.");
             }
 
             return restaurants;
+        }
+
+        public Dictionary<string, List<RestaurantDto>> GetRestaurantCaches()
+        {
+            return _restaurantCache.GetAll<List<RestaurantDto>>("2020");
         }
     }
 }

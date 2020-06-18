@@ -35,8 +35,8 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                 // 1. 식당 정보 가져오기
                 cmd.CommandText = "get_restaurants_info_by_date";
                 // TEST 용
-                Console.WriteLine($"DateTIme : {DateTime.Now.ToString("yyyy-MM-dd")}");
-                cmd.Parameters.Add("in_date", MySqlDbType.DateTime).Value = DateTime.Now.ToString("yyyy-MM-dd");
+                Console.WriteLine($"DateTIme : {DateTime.UtcNow.AddHours(9).ToString("yyyy-MM-dd")}");
+                cmd.Parameters.Add("in_date", MySqlDbType.DateTime).Value = DateTime.UtcNow.AddHours(9).ToString("yyyy-MM-dd");
 
                 using (MySqlDataReader reader = cmd.ExecuteReader()) 
                 {
@@ -56,6 +56,8 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                         });
                     }
                 }
+
+                var sortedRestaurantInfos = restaurantInfos.OrderBy(restaurant => restaurant.name).ToList();
                 
 
                 // 2. 메뉴 가져오기
@@ -81,7 +83,7 @@ namespace deliSHAs.v2.api.restaurant.Services.store.restaurant
                 
 
                 // 3. 식당 정보, 메뉴를 합치기
-                foreach(var restaurantInfo in restaurantInfos)
+                foreach(var restaurantInfo in sortedRestaurantInfos)
                 {
                     var targetMenu = menus?.Where(x => x.restaurant_id == restaurantInfo.id)?.ToList();
 
