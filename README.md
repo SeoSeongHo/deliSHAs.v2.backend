@@ -38,5 +38,5 @@ WAS 는 클라이언트의 요청을 받아, 캐시에 해당 날짜 데이터�
 
 ### GetRestaurants
 - Method : GET
-- Endpoint : DelishasWas-env.eba-xpez2dip.ap-northeast-2.elasticbeanstalk.com/api/v2/restaurants 
+- Endpoint : {domain}/api/v2/restaurants 
 - ETC : http 만 지원, 추후에 ssl + route 53 붙일 예정 (클라 배포 일정과 맞춰서)
